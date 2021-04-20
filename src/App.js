@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useRef } from 'react';
+import React, { useCallback, useState, useRef, useReducer } from 'react';
 import TodoInsert from './components/TodoInsert';
 import TodoList from './components/TodoList';
 import TodoTemplate from './components/TodoTemplate';
@@ -15,8 +15,24 @@ function createBulkTodos(){
   return array
 }
 
+function todoReducer(todos, action){
+  switch(action.type){
+    case 'INSERT':
+      return todos.concat(action.todo);
+    case 'REMOVE':
+      return todos.filter(todo => todo.id !== action.id);
+    case 'TOGGLE':
+      return todos.map(todo => todo.id === action.id 
+        ? {...todos, checked: !todo.checked}
+        : todo
+        )
+    default:
+      return todos;
+  }
+}
+
 const App = () => {
-  const [todos, setTodo] = useState(createBulkTodos);
+  const [todos, dispatch] = useReducer(todoReducer, undefined, createBulkTodos);
 
   const nextID = useRef(2001);
 
@@ -27,18 +43,18 @@ const App = () => {
         text,
         checked: false,
       };
-      setTodo(todos => todos.concat(todo));
+      dispatch({type:'INSERT', todo})
       nextID.current += 1;
     },
     [],
   );
 
   const onToggle = useCallback(id =>{
-    setTodo(todos => todos.map(todo => todo.id === id ? {...todo, checked:!todo.checked} : todo))
+    dispatch({type:'TOGGLE', id})
   },[])
 
   const onRemove = useCallback(id =>{
-    setTodo(todos => todos.filter(todo => todo.id !== id))
+    dispatch({type:'REMOVE', id})
   },[])
 
   return (
