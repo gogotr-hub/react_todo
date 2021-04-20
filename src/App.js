@@ -42,8 +42,13 @@ const App = () => {
 
   return (
       <TodoTemplate>
+<<<<<<< HEAD
         <TodoInsert onInsert={onInsert} />
         <TodoList todos={todos} onRemove={onRemove} onToggle={onToggle}></TodoList>
+=======
+        <TodoInsert></TodoInsert>
+        
+>>>>>>> 912166a488e2ee3c9fc3d32dbccf6a25fc35b443
       </TodoTemplate>
   );
 };
