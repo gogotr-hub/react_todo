@@ -5,7 +5,7 @@ import TodoTemplate from './components/TodoTemplate';
 
 function createBulkTodos(){
   const array = []
-  for(let i=1; i<=2000; i++){
+  for(let i=1; i<=1; i++){
     array.push({
       id:i,
       text: `할일 ${i}`,
